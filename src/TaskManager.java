@@ -2,16 +2,13 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class TaskManager {
-    static int taskId = 0;
+    int taskId = 0;
+    static final private HashMap<Integer, Task> tasks = new HashMap<>();
+    static final private HashMap<Integer, Epic> epics = new HashMap<>();
+    static final private HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
-    static private HashMap<Integer, Task> tasks = new HashMap<>();
-    static private HashMap<Integer, Epic> epics = new HashMap<>();
-    static private HashMap<Integer, SubTask> subTasks = new HashMap<>();
-
-
-    public int createNewId() {//создаем новый id
-        taskId++;
-        return taskId;
+    private int createNewId() {//создаем новый id
+        return taskId++;
     }
 
     public Task createTask(Task task) {//создаем новый Task
@@ -23,6 +20,10 @@ public class TaskManager {
     public SubTask createSubTask(SubTask subTask) {
         subTask.setTaskId(createNewId());
         subTasks.put(subTask.getTaskId(), subTask);
+        int subTaskId = subTask.getTaskId();
+        Epic epic1 = epics.get(subTask.getEpicId());
+        epic1.addSubTaskIdToLisT(subTaskId);
+        countStatusByEpicId(subTask.getEpicId());
         return subTask;
     }
 
@@ -33,19 +34,17 @@ public class TaskManager {
         return epic;
     }
 
-    public ArrayList getAllTaskList() {
+    public ArrayList<Task> getAllTaskList() {
         ArrayList<Task> allTaskList = new ArrayList<>();
-        for (Integer key : tasks.keySet()) {
-            Task taskList = tasks.get(key);
+        for (Task taskList : tasks.values()) {//для каждого клчюча объекта нужно
             allTaskList.add(taskList);
         }
         return allTaskList;
     }
 
-    public ArrayList getAllEpicList() {
+    public ArrayList<Epic> getAllEpicList() {
         ArrayList<Epic> allEpicList = new ArrayList<>();
-        for (Integer key : epics.keySet()) {
-            Epic epicList = epics.get(key);
+        for (Epic epicList : epics.values()) {
             allEpicList.add(epicList);
         }
         return allEpicList;
@@ -53,9 +52,8 @@ public class TaskManager {
 
     static public ArrayList<SubTask> getAllSubTaskList() {
         ArrayList<SubTask> allSubTaskList = new ArrayList<>();
-        for (Integer key : subTasks.keySet()) {
-            SubTask subTaskList = subTasks.get(key);
-            allSubTaskList.add(subTaskList);
+        for (SubTask tasksList : subTasks.values()) {
+            allSubTaskList.add(tasksList);
         }
         return allSubTaskList;
     }
@@ -65,45 +63,57 @@ public class TaskManager {
     }
 
     public void deleteEpicList() {
+        for (Integer key : epics.keySet()) {//для каждого объекта получаем ключ
+            Epic epicList = epics.get(key);//получаем епик по ключу
+            for (Integer subTaskid : epicList.subTaskIdList) {//для каждого id из списка idсабтасков конкретного эпика
+                subTasks.remove(subTaskid);//удаляем объект сабтаск по id
+            }
+        }
         epics.clear();
     }
 
     public void deleteSubTaskList() {
+        for (Integer key : epics.keySet()) {//для каждого объекта получаем ключ
+            Epic epic = epics.get(key);//получаем объект по ключу
+            ArrayList<Integer> epicId = new ArrayList<>();
+            for (Integer key1 : epic.subTaskIdList) {
+                SubTask subTask1 = getSubTaskById(key1);
+                epicId.add(subTask1.getEpicId());
+            }
+            epic.subTaskIdList.clear();
+            for (Integer key2 : epicId) {
+                countStatusByEpicId(key2);
+            }
+        }
         subTasks.clear();
     }
 
     public Task getTaskById(int taskId) {
-        Task taskbyId = tasks.get(taskId);
-        if (taskbyId != null) {
-            return taskbyId;
+        if (tasks.containsKey(taskId)) {
+            return tasks.get(taskId);
         } else {
             System.out.println("No task list found with id " + taskId);
         }
         return tasks.get(taskId);
-
-
     }
 
     public Epic getEpicById(int taskId) {
-        Epic epicbyId = epics.get(taskId);
-        if (epicbyId != null) {
-            return epicbyId;
+        epics.get(taskId);
+        if (epics.containsKey(taskId)) {
+            return epics.get(taskId);
         } else {
             System.out.println("No epic list found with id " + taskId);
         }
         return epics.get(taskId);
-
     }
 
     public SubTask getSubTaskById(int taskId) {
-        SubTask subTaskbyId = subTasks.get(taskId);
-        if (subTaskbyId != null) {
-            return subTaskbyId;
+        if (subTasks.containsKey(taskId)) {
+            return subTasks.get(taskId);
         } else {
             System.out.println("No subTask found with id " + taskId);
         }
-        return subTaskbyId;
-
+        return subTasks.get(taskId);
     }
 
     public void removeTaskById(int taskId) {
@@ -111,11 +121,19 @@ public class TaskManager {
     }
 
     public void removeEpicById(int taskId) {
+        Epic epic1 = getEpicById(taskId);
+        for (Integer idToDelete : epic1.subTaskIdList) {
+            subTasks.remove(idToDelete);
+        }
         epics.remove(taskId);
     }
 
     public void removeSubTaskById(int taskId) {
+        SubTask subTask = getSubTaskById(taskId);
+        Epic epic1 = getEpicById(subTask.getEpicId());
+        epic1.subTaskIdList.remove(taskId);
         subTasks.remove(taskId);
+        countStatusByEpicId(subTask.getEpicId());
     }
 
     public void updateTask(Task task) {
@@ -131,29 +149,25 @@ public class TaskManager {
         createdEpic.setDescription(epic.getDescription());
     }
 
-   public void updateSubTask(SubTask subTask) {
+    public void updateSubTask(SubTask subTask) {
         subTasks.put(subTask.getTaskId(), subTask);
-        Status status = getStatus();
-        Epic epic = getEpicById(subTask.getEpicId());
-        epic.setStatus(status);
+        countStatusByEpicId(subTask.getEpicId());
     }
 
-
-   public ArrayList<SubTask> getSubTasks() {
+    public ArrayList<SubTask> getSubTasksByEpicId(int epicId) {
+        Epic epic1 = getEpicById(epicId);
         ArrayList<SubTask> subTasksInEpic = new ArrayList<>();
-        for (SubTask subTask : getAllSubTaskList()) {
-            if (subTask.getEpicId() != subTask.getTaskId()) {
-                subTasksInEpic.add(subTask);
-            }
+        for (Integer subTaskId : epic1.subTaskIdList) {
+            subTasksInEpic.add(subTasks.get(subTaskId));
         }
-       System.out.println(subTasksInEpic);
         return subTasksInEpic;
-
     }
 
-    public Status getStatus() {
-        ArrayList<SubTask> subTasksInEpic = getSubTasks();
+    private Status countStatusByEpicId(int epicId) {
+        ArrayList<SubTask> subTasksInEpic = getSubTasksByEpicId(epicId);
         if (subTasksInEpic.size() == 0) {
+            Epic epic1 = getEpicById(epicId);
+            epic1.status = Status.NEW;
             return Status.NEW;
         }
         boolean isAllStatusNew = true;
@@ -168,12 +182,17 @@ public class TaskManager {
             }
         }
         if (isAllStatusNew) {
+            Epic epic1 = getEpicById(epicId);
+            epic1.status = Status.NEW;
             return Status.NEW;
         }
         if (isAllStatusDone) {
+            Epic epic1 = getEpicById(epicId);
+            epic1.status = Status.DONE;
             return Status.DONE;
         }
-
+        Epic epic1 = getEpicById(epicId);
+        epic1.status = Status.IN_PROGRESS;
         return Status.IN_PROGRESS;
     }
 }

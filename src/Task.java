@@ -5,11 +5,8 @@ public class Task {
     private int taskId; //Уникальный идентификационный номер задачи
     private String name; //Название, кратко описывающее суть задачи
     private String description; //Описание, в котором раскрываются детали.
-    public Status status;
-    public TaskType type;//Статус, отображающий её прогресс
-
-
-
+    public Status status; //статус задачи
+    public TaskType type;//Тип задачи
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -46,6 +43,10 @@ public class Task {
         return status;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,10 +69,6 @@ public class Task {
                 ", status=" + status +
                 ", type=" + type +
                 '}';
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 }
 
