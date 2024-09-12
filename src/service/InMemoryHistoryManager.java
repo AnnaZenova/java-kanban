@@ -1,19 +1,21 @@
 package service;
 import model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager{
 
-private static final int HISTORY_SIZE_TO_COMPARE = 9;
+private static final int HISTORY_SIZE_TO_COMPARE = 10;
+
+public final static List<Task> viewHistory = new ArrayList<>();
 
   @Override
     public List<Task> getHistory() {
     if (viewHistory.isEmpty()) {
             System.out.println("No view history");
         }
-      List<Task>copiedViewHistory = List.copyOf(viewHistory);
-        return copiedViewHistory;
+       return List.copyOf(viewHistory);
     }
 
     @Override
@@ -22,7 +24,7 @@ private static final int HISTORY_SIZE_TO_COMPARE = 9;
             return;
         }
 
-        if (viewHistory.size() > HISTORY_SIZE_TO_COMPARE) {
+        if (viewHistory.size() >= HISTORY_SIZE_TO_COMPARE) {
             viewHistory.remove(0);
         }
         viewHistory.add(task);

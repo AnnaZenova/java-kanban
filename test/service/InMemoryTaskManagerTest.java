@@ -12,14 +12,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
 
     TaskManager manager = Managers.getDefault();
-    Task task = new Task("Новая таска", "для проверки", Status.NEW);
+    Task task;
+    Task task1;
+    Epic epic;
+    SubTask subTask;
     HistoryManager historyManager = Managers.getDefaultHistory();
+    Task task2;
 
     @BeforeEach
-    void deleteTasksLists() {
-        manager.deleteTaskList();
-        manager.deleteSubTaskList();
-        manager.deleteEpicList();
+    @DisplayName("создать объекты/экземпляры")
+    void shouldCreateObjects() {
+        task = new Task("Новая таска", "для проверки", Status.NEW);
+        epic = new Epic("Новый епик", "для проверки", Status.NEW);
+        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId());
+        task1 = new Task("Имя", "Фамилия", Status.NEW);
+        task2 = new Task("Имя", "Фамилия", Status.NEW);
     }
 
     @Test
@@ -34,9 +41,7 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("что экземпляры класса равны друг другу, если равен ID")
     void shouldCreateEqualSubTasksById() {
-        Epic epic = new Epic("Новый епик", "для проверки", Status.NEW);
         manager.createEpic(epic);
-        SubTask subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId());
         manager.createSubTask(subTask);
         SubTask subTask1 = manager.getSubTaskById(subTask.getTaskId());
         SubTask subTask2 = manager.getSubTaskById(subTask.getTaskId());
@@ -46,7 +51,6 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("что экземпляры класса равны друг другу, если равен ID")
     void shouldCreateEqualEpicsById() {
-        Epic epic = new Epic("Новый епик", "для проверки", Status.NEW);
         manager.createEpic(epic);
         Epic epic1 = manager.getEpicById(epic.getTaskId());
         Epic epic2 = manager.getEpicById(epic.getTaskId());
@@ -56,7 +60,7 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("что в историю добавляются значения")
     void historyShouldNotBeNull() {
-        historyManager.viewHistory.add(task);
+        historyManager.add(task);
         final List<Task> viewHistory1 = historyManager.getHistory();
         assertNotNull(viewHistory1, "История не пустая.");
         assertEquals(1, viewHistory1.size(), "История не пустая.");
@@ -65,9 +69,7 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("епик не добавится в себя как сабтаск")
     void epicShouldNotBeAddedAsASubTask() {
-        Epic epic = new Epic("Новый епик", "для проверки", Status.NEW);
         manager.createEpic(epic);
-        SubTask subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId());
         subTask.setTaskId(epic.getTaskId());
         manager.updateSubTask(subTask);
         assertEquals(0, epic.subTaskIdList.size(), "В список id сабтасок не попал новый id");
@@ -76,8 +78,6 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("сабтаск не станет своим же епиком")
     void subTaskShouldNotBeAddedAsAnEpic() {
-        Epic epic = new Epic("Новый епик", "для проверки", Status.NEW);
-        SubTask subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId());
         manager.createEpic(epic);
         manager.createSubTask(subTask);
         subTask.setEpicId(subTask.getTaskId());
@@ -90,9 +90,7 @@ class InMemoryTaskManagerTest {
     @DisplayName("getHistory возвращает 10 задач (ни больше ни меньше)")
     void shouldBeNotMoreThen10Tasks() {
         manager.createTask(task);
-        Epic epic = new Epic("Новый епик", "для проверки", Status.NEW);
         manager.createEpic(epic);
-        SubTask subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId());
         manager.createSubTask(subTask);
 
         for (int i = 1; i <= 15; i++) {
@@ -100,27 +98,23 @@ class InMemoryTaskManagerTest {
             manager.getSubTaskById(subTask.getTaskId());
             manager.getEpicById(epic.getTaskId());
         }
-        assertEquals(10, historyManager.viewHistory.size(), "Не больше 10 тасок");
+        assertEquals(10, historyManager.getHistory().size(), "Не больше 10 тасок");
     }
 
     @Test
     @DisplayName("просмотренные задачи должны добавляться в конец")
-//
     void shouldTaskBeAddedInTheEnd() {
         manager.createTask(task);
-        Epic epic = new Epic("Новый епик", "для проверки", Status.NEW);
         manager.createEpic(epic);
         manager.getEpicById(epic.getTaskId());
         manager.getTaskById(task.getTaskId());
-        assertEquals(task.getTaskId(), historyManager.viewHistory.get(1).getTaskId(), "ID не совпали");
+        assertEquals(task.getTaskId(), historyManager.getHistory().get(1).getTaskId(), "ID не совпали");
     }
 
     @Test
 //задачи с заданным id и сгенерированным id не конфликтуют;
     void shouldTasksBeEqualsNoMetterHowIdCreated() {
-        Task task1 = new Task("Имя", "Фамилия", Status.NEW);
         manager.createTask(task1);
-        Task task2 = new Task("Имя", "Фамилия", Status.NEW);
         task2.setTaskId(task1.getTaskId());
         assertEquals(task1, task2, "Объекты не равны");
     }

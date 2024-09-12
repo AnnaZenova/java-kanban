@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    HistoryManager historyManager = Managers.getDefaultHistory();
+   private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     int taskId = 0;
     private final  Map<Integer, Task> tasks = new HashMap<>();
@@ -19,14 +19,10 @@ public class InMemoryTaskManager implements TaskManager {
 
    @Override
     public List<Task> getHistory() {
-        if (historyManager.viewHistory.isEmpty()) {
-            System.out.println("No view history");
-        }
-       List<Task>copiedViewHistory = List.copyOf(historyManager.viewHistory);
-       return copiedViewHistory;
+       return historyManager.getHistory();
     }
 
-    public int createNewId() {//создаем новый id
+    private int createNewId() {//создаем новый id
         return taskId++;
     }
 
@@ -106,6 +102,7 @@ public class InMemoryTaskManager implements TaskManager {
            System.out.println("No epic list found with id " + taskId);
        }
         historyManager.add(epics.get(taskId));
+        System.out.println(getHistory());
         return epics.get(taskId);
     }
 
