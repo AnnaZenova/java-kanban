@@ -1,16 +1,15 @@
-package main.service;
+package service;
 
-import main.model.Epic;
-import main.model.SubTask;
-import main.model.Task;
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import java.util.List;
 
 import java.util.ArrayList;
 
 public interface TaskManager {
 
-    int createNewId();//создаем новый id
-
-    //ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
     Task createTask(Task task);
 

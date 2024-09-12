@@ -1,7 +1,7 @@
-package main.model;
+package model;
 
-import main.status.Status;
-import main.status.TaskType;
+import status.Status;
+import status.TaskType;
 import java.util.Objects;
 
 public class Task {

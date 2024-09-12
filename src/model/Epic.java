@@ -1,13 +1,14 @@
-package main.model;
+package model;
 
 import java.util.ArrayList;
-import main.status.Status;
-import main.status.TaskType;
+import java.util.List;
+import status.Status;
+import status.TaskType;
 
 
 public class Epic extends Task {
 
-    public final ArrayList<Integer> subTaskIdList = new ArrayList<>();
+    public final List<Integer> subTaskIdList = new ArrayList<>();
 
     public Epic(String name, String description, Status status) {
         super(name, description, status);
@@ -15,11 +16,11 @@ public class Epic extends Task {
         this.status = Status.NEW;
     }
 
-     public ArrayList<Integer> getSubTaskIdList() {
+     public List<Integer> getSubTaskIdList() {
         return subTaskIdList;
     }
 
-    public void addSubTaskIdToLisT (int subTaskId) {
+    public void addSubTaskIdToList (int subTaskId) {
         subTaskIdList.add(subTaskId);
     }
 
@@ -29,7 +30,7 @@ public class Epic extends Task {
                 "taskId=" + getTaskId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                "subTaskIdList=" + getSubTaskIdList() +
+                ", subTaskIdList=" + getSubTaskIdList() +
                 ", status=" + getStatus() +
                 ", type=" + getType() +
                 '}';

@@ -1,4 +1,4 @@
-package main.status;
+package status;
 
 public enum TaskType {
     EPIC,

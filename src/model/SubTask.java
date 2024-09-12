@@ -1,6 +1,6 @@
-package main.model;
-import main.status.Status;
-import main.status.TaskType;
+package model;
+import status.Status;
+import status.TaskType;
 
 public class SubTask extends Task {
 
@@ -25,7 +25,7 @@ public class SubTask extends Task {
                 "taskId=" + getTaskId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                "status=" + getStatus() +
+                ", status=" + getStatus() +
                 ", epicId=" + getEpicId() +
                 ", type=" + getType() +
                 '}';
