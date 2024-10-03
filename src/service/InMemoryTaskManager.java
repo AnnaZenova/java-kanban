@@ -22,12 +22,12 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
-    private int createNewId() {//создаем новый id
+    private int createNewId() { //создаем новый id
         return taskId++;
     }
 
     @Override
-    public Task createTask(Task task) {//создаем новый main.model.Task
+    public Task createTask(Task task) { //создаем новый main.model.Task
         task.setTaskId(createNewId());
         tasks.put(task.getTaskId(), task);
         return task;
