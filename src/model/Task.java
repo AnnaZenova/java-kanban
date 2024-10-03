@@ -18,37 +18,21 @@ public class Task {
         type = TaskType.TASK;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) { this.description = description; }
 
-    public int getTaskId() {
-        return taskId;
-    }
+    public int getTaskId() { return taskId; }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
+    public void setTaskId(int taskId) { this.taskId = taskId; }
 
-    public Status getStatus() {
-        return status;
-    }
+    public Status getStatus() { return status; }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    public void setStatus(Status status) { this.status = status; }
 
     public TaskType getType() { return type; }
 
