@@ -102,7 +102,6 @@ public class InMemoryTaskManager implements TaskManager {
            System.out.println("No epic list found with id " + taskId);
        }
         historyManager.add(epics.get(taskId));
-        System.out.println(getHistory());
         return epics.get(taskId);
     }
 

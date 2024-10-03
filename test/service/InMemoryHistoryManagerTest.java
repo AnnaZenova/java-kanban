@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
 
-    HistoryManager historyManager = Managers.getDefaultHistory();
     TaskManager manager = Managers.getDefault();
     Task task;
     Epic epic;
@@ -27,11 +26,12 @@ class InMemoryHistoryManagerTest {
     @DisplayName("проверяем добавление по add")
     void shouldAddNewTaskToStory() {
         manager.createTask(task);
+        manager.getTaskById(task.getTaskId());
         manager.createEpic(epic);
         manager.getEpicById(epic.getTaskId());
-        manager.getTaskById(task.getTaskId());
-        assertEquals(epic, historyManager.getHistory().get(0), "Объекты должны совпасть");
-        assertEquals(task, historyManager.getHistory().get(1), "Объекты должны совпасть");
+        System.out.println(manager.getHistory());
+        assertEquals(epic, manager.getHistory().get(1), "Объекты должны совпасть");
+        assertEquals(task, manager.getHistory().get(0), "Объекты должны совпасть");
     }
 }
 

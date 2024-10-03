@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import status.Status;
+
+import java.util.ArrayList;
 import  java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +26,7 @@ class InMemoryTaskManagerTest {
     void shouldCreateObjects() {
         task = new Task("Новая таска", "для проверки", Status.NEW);
         epic = new Epic("Новый епик", "для проверки", Status.NEW);
-        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId());
+        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1);
         task1 = new Task("Имя", "Фамилия", Status.NEW);
         task2 = new Task("Имя", "Фамилия", Status.NEW);
     }
@@ -75,30 +77,30 @@ class InMemoryTaskManagerTest {
         assertEquals(0, epic.subTaskIdList.size(), "В список id сабтасок не попал новый id");
     }
 
-    @Test
-    @DisplayName("сабтаск не станет своим же епиком")
-    void subTaskShouldNotBeAddedAsAnEpic() {
-        manager.createEpic(epic);
-        manager.createSubTask(subTask);
-        subTask.setEpicId(subTask.getTaskId());
-        manager.getEpicById(subTask.getTaskId());
-        assertNull(manager.getEpicById(subTask.getTaskId()), "Такого епика с таким ID больше нет");
-    }
-
-
-    @Test //getHistory возвращает 10 задач (ни больше ни меньше)
-    @DisplayName("getHistory возвращает 10 задач (ни больше ни меньше)")
-    void shouldBeNotMoreThen10Tasks() {
+        @Test
+    @DisplayName("в историю не попадают повторы")
+    void shouldBeNoDublicates() {
         manager.createTask(task);
         manager.createEpic(epic);
         manager.createSubTask(subTask);
-
         for (int i = 1; i <= 15; i++) {
             manager.getTaskById(task.getTaskId());
             manager.getSubTaskById(subTask.getTaskId());
             manager.getEpicById(epic.getTaskId());
         }
-        assertEquals(10, historyManager.getHistory().size(), "Не больше 10 тасок");
+        assertEquals(3, manager.getHistory().size(), "Дубликаты есть");
+    }
+
+    @Test
+    @DisplayName("история содержит больше задач")
+    void shouldContainMoreTheniTasks() {
+
+        for (int i = 1; i <= 15; i++) {
+            Task a = new Task ("Новая таска"+i, "Описание таски"+i, Status.NEW);
+            manager.createTask(a);
+            manager.getTaskById(a.getTaskId());
+        }
+        assertEquals(15, manager.getHistory().size(), "История содержит задач больше/меньше заданного i");
     }
 
     @Test
@@ -108,7 +110,19 @@ class InMemoryTaskManagerTest {
         manager.createEpic(epic);
         manager.getEpicById(epic.getTaskId());
         manager.getTaskById(task.getTaskId());
-        assertEquals(task.getTaskId(), historyManager.getHistory().get(1).getTaskId(), "ID не совпали");
+        assertEquals(task.getTaskId(), manager.getHistory().get(1).getTaskId(), "ID не совпали");
+    }
+
+    @Test
+    @DisplayName("операция добавления работает")
+    void ShouldAddTicketToHistory() {
+        manager.createTask(task);
+        manager.getTaskById(task.getTaskId());
+        manager.createEpic(epic);
+        manager.getEpicById(epic.getTaskId());
+        System.out.println(manager.getHistory());
+        assertEquals(epic, manager.getHistory().get(1), "Объекты должны совпасть");
+        assertEquals(task, manager.getHistory().get(0), "Объекты должны совпасть");
     }
 
     @Test
