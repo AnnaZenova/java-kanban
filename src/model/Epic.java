@@ -15,9 +15,13 @@ public class Epic extends Task {
         this.status = Status.NEW;
     }
 
-    public List<Integer> getSubTaskIdList() { return subTaskIdList; }
+    public List<Integer> getSubTaskIdList() {
+        return subTaskIdList;
+    }
 
-    public void addSubTaskIdToList (int subTaskId) { subTaskIdList.add(subTaskId); }
+    public void addSubTaskIdToList(int subTaskId) {
+        subTaskIdList.add(subTaskId);
+    }
 
     @Override
     public String toString() {
