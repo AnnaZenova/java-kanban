@@ -1,5 +1,4 @@
 package model;
-
 import status.Status;
 import status.TaskType;
 import java.util.Objects;
