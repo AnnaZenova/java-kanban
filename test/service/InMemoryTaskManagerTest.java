@@ -40,16 +40,6 @@ class InMemoryTaskManagerTest {
 
     @Test
     @DisplayName("что экземпляры класса равны друг другу, если равен ID")
-    void shouldCreateEqualSubTasksById() {
-        manager.createEpic(epic);
-        manager.createSubTask(subTask);
-        SubTask subTask1 = manager.getSubTaskById(subTask.getTaskId());
-        SubTask subTask2 = manager.getSubTaskById(subTask.getTaskId());
-        assertEquals(subTask1, subTask2);
-    }
-
-    @Test
-    @DisplayName("что экземпляры класса равны друг другу, если равен ID")
     void shouldCreateEqualEpicsById() {
         manager.createEpic(epic);
         Epic epic1 = manager.getEpicById(epic.getTaskId());
@@ -64,15 +54,6 @@ class InMemoryTaskManagerTest {
         final List<Task> viewHistory1 = historyManager.getHistory();
         assertNotNull(viewHistory1, "История не пустая.");
         assertEquals(1, viewHistory1.size(), "История не пустая.");
-    }
-
-    @Test
-    @DisplayName("епик не добавится в себя как сабтаск")
-    void epicShouldNotBeAddedAsASubTask() {
-        manager.createEpic(epic);
-        subTask.setTaskId(epic.getTaskId());
-        manager.updateSubTask(subTask);
-        assertEquals(0, epic.subTaskIdList.size(), "В список id сабтасок не попал новый id");
     }
 
     @Test

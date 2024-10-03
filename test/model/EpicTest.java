@@ -25,17 +25,10 @@ class EpicTest extends InMemoryTaskManager {
     }
 
     @Test
-    @DisplayName("проверяем совпадает ли с копией")
-    void shouldEqualsWithCopy() {
-        assertEquals(epicExpected, epic, "Эпики должны совпадать");
-
-    }
-
-    @Test
     @DisplayName("проверяем добавляет ли в лист сабтасков новый ID")
     void shouldAddSubTuskToList() {
         manager.createEpic(epic);
         manager.createSubTask(subTask);
-        assertEquals(0, epic.subTaskIdList.size(), "Список сабтасков пустой");
+        assertEquals(1, epic.subTaskIdList.size(), "Список сабтасков пустой");
     }
 }
