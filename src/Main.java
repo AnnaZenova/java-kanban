@@ -20,7 +20,7 @@ public class Main {
         System.out.println("====================================");
         Task task1 = taskManager.createTask(new Task("Задача1", "Описание1", Status.NEW));
         Task task2 = taskManager.createTask(new Task("Задача1", "Описание1", Status.NEW));
-        for (int i=1; i<=11;i++) {
+        for (int i = 1; i <= 11; i++) {
             taskManager.getTaskById(task1.getTaskId());
             taskManager.getTaskById(task2.getTaskId());
         }
@@ -37,7 +37,7 @@ public class Main {
         System.out.println("====================================");
         System.out.println(taskManager.getAllSubTaskList());
         System.out.println("====================================");
-        System.out.println( taskManager.getSubTasksByEpicId(epic1.getTaskId()));
+        System.out.println(taskManager.getSubTasksByEpicId(epic1.getTaskId()));
         System.out.println("====================================");
         taskManager.removeEpicById(epic2.getTaskId());
         System.out.println("====================================");
