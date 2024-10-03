@@ -16,13 +16,13 @@ class EpicTest extends InMemoryTaskManager {
     Epic epicExpected;
     SubTask subTask;
 
-   @BeforeEach
-   @DisplayName("создать объекты/экземпляры")
-   void shouldCreateEpicsAndTasksAndSubTasks() {
-       epic = new Epic("name", "desc", Status.NEW);
-       epicExpected = new Epic("name1", "desc", Status.NEW);
-       subTask = new SubTask("Новый епик","новый епик",Status.IN_PROGRESS, epic.getTaskId());
-   }
+    @BeforeEach
+    @DisplayName("создать объекты/экземпляры")
+    void shouldCreateEpicsAndTasksAndSubTasks() {
+        epic = new Epic("name", "desc", Status.NEW);
+        epicExpected = new Epic("name1", "desc", Status.NEW);
+        subTask = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, epic.getTaskId());
+    }
 
     @Test
     @DisplayName("проверяем совпадает ли с копией")
@@ -34,8 +34,8 @@ class EpicTest extends InMemoryTaskManager {
     @Test
     @DisplayName("проверяем добавляет ли в лист сабтасков новый ID")
     void shouldAddSubTuskToList() {
-    manager.createEpic(epic);
-    manager.createSubTask(subTask);
-    assertEquals(0,epic.subTaskIdList.size(),"Список сабтасков пустой");
+        manager.createEpic(epic);
+        manager.createSubTask(subTask);
+        assertEquals(0, epic.subTaskIdList.size(), "Список сабтасков пустой");
     }
 }

@@ -19,14 +19,14 @@ class SubTaskTest extends InMemoryTaskManager {
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateEpicsAndTasksAndSubTasks() {
         epic = new Epic("name", "desc", Status.NEW);
-        subTask = new SubTask("Новый епик","новый епик",Status.IN_PROGRESS, epic.getTaskId());
+        subTask = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, epic.getTaskId());
     }
 
     @Test
     @DisplayName("проверяем получение id")
     void getEpicId() {
-        SubTask subTask1 = new SubTask("Новый епик","новый епик",Status.IN_PROGRESS,1);
-        assertEquals(1,subTask1.getEpicId(),"ID не совпадают");
+        SubTask subTask1 = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, 1);
+        assertEquals(1, subTask1.getEpicId(), "ID не совпадают");
 
     }
 
@@ -36,7 +36,7 @@ class SubTaskTest extends InMemoryTaskManager {
         manager.createEpic(epic);
         manager.createSubTask(subTask);
         subTask.setEpicId(1);
-        assertEquals(1,subTask.getEpicId(),"ID не совпадают");
+        assertEquals(1, subTask.getEpicId(), "ID не совпадают");
 
     }
 }

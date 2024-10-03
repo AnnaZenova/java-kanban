@@ -26,7 +26,7 @@ class InMemoryTaskManagerTest {
     void shouldCreateObjects() {
         task = new Task("Новая таска", "для проверки", Status.NEW);
         epic = new Epic("Новый епик", "для проверки", Status.NEW);
-        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1);
+        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, 1);
         task1 = new Task("Имя", "Фамилия", Status.NEW);
         task2 = new Task("Имя", "Фамилия", Status.NEW);
     }
@@ -77,7 +77,7 @@ class InMemoryTaskManagerTest {
         assertEquals(0, epic.subTaskIdList.size(), "В список id сабтасок не попал новый id");
     }
 
-        @Test
+    @Test
     @DisplayName("в историю не попадают повторы")
     void shouldBeNoDublicates() {
         manager.createTask(task);
@@ -96,7 +96,7 @@ class InMemoryTaskManagerTest {
     void shouldContainMoreTheniTasks() {
 
         for (int i = 1; i <= 15; i++) {
-            Task a = new Task ("Новая таска"+i, "Описание таски"+i, Status.NEW);
+            Task a = new Task("Новая таска" + i, "Описание таски" + i, Status.NEW);
             manager.createTask(a);
             manager.getTaskById(a.getTaskId());
         }
