@@ -45,7 +45,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         private Node addLast(Task element) {  //добавить задачу в конец
             final Node oldTail = tail;
-            final Node newNode = new Node (oldTail, element, null);
+            final Node newNode = new Node(oldTail, element, null);
             tail = newNode;
             if (oldTail == null) {
                 head = newNode;
