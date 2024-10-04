@@ -1,12 +1,13 @@
 package service;
+import model.Task;
 
-public class Node<E> {
+public class Node {
 
-    public E data;
-    public Node<E> next;
-    public Node<E> prev;
+    Task data;
+    Node next;
+    Node prev;
 
-    public Node(Node<E> prev, E data, Node<E> next) {
+    public Node(Node prev, Task data, Node next) {
         this.data = data;
         this.next = next;
         this.prev = prev;

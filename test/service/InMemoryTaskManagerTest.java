@@ -99,7 +99,6 @@ class InMemoryTaskManagerTest {
         manager.getTaskById(task.getTaskId());
         manager.createEpic(epic);
         manager.getEpicById(epic.getTaskId());
-        System.out.println(manager.getHistory());
         assertEquals(epic, manager.getHistory().get(1), "Объекты должны совпасть");
         assertEquals(task, manager.getHistory().get(0), "Объекты должны совпасть");
     }
