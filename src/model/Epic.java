@@ -1,5 +1,4 @@
 package model;
-
 import java.util.ArrayList;
 import java.util.List;
 import status.Status;
@@ -16,11 +15,11 @@ public class Epic extends Task {
         this.status = Status.NEW;
     }
 
-     public List<Integer> getSubTaskIdList() {
+    public List<Integer> getSubTaskIdList() {
         return subTaskIdList;
     }
 
-    public void addSubTaskIdToList (int subTaskId) {
+    public void addSubTaskIdToList(int subTaskId) {
         subTaskIdList.add(subTaskId);
     }
 

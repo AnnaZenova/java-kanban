@@ -10,24 +10,24 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
-   private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     int taskId = 0;
-    private final  Map<Integer, Task> tasks = new HashMap<>();
-    private final  Map<Integer, Epic> epics = new HashMap<>();
-    private final  Map<Integer, SubTask> subTasks = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, SubTask> subTasks = new HashMap<>();
 
-   @Override
+    @Override
     public List<Task> getHistory() {
-       return historyManager.getHistory();
+        return historyManager.getHistory();
     }
 
-    private int createNewId() {//создаем новый id
+    private int createNewId() { //создаем новый id
         return taskId++;
     }
 
     @Override
-    public Task createTask(Task task) {//создаем новый main.model.Task
+    public Task createTask(Task task) { //создаем новый main.model.Task
         task.setTaskId(createNewId());
         tasks.put(task.getTaskId(), task);
         return task;
@@ -98,11 +98,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int taskId) {
-       if (!epics.containsKey(taskId)) {
-           System.out.println("No epic list found with id " + taskId);
-       }
+        if (!epics.containsKey(taskId)) {
+            System.out.println("No epic list found with id " + taskId);
+        }
         historyManager.add(epics.get(taskId));
-        System.out.println(getHistory());
         return epics.get(taskId);
     }
 
