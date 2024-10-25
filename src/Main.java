@@ -5,6 +5,7 @@ import model.Epic;
 import model.SubTask;
 import model.Task;
 import service.TaskManager;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -28,10 +29,18 @@ public class Main {
         taskManager.updateSubTask(new SubTask("Задача update", "Описание update", Status.NEW, epic1.getTaskId()));
         Epic epic2 = taskManager.createEpic(new Epic("Эпик2", "Описание эпика2", Status.DONE));
         backedTaskManager.createEpic(epic2);
+        //проверки по файлам:
+        File file = new File("C:\\Users\\fored\\first-project\\tests.txt");
+        File file1 = new File("A:\\Users\\fored\\first-project\\tests.txt");
 
-        System.out.println(backedTaskManager.loadFromFile(backedTaskManager.getFileForSavings()));
+        System.out.println(backedTaskManager.loadFromFile(backedTaskManager.getFileForSavings()));//восстановление из файла (вернет пустой массив)
         System.out.println(Files.readString(backedTaskManager.getFileForSavings().toPath()));
+        System.out.println(backedTaskManager.loadFromFile(backedTaskManager.getFileForSavings()).getAllTaskList());//вернет список задач в нужном формате (проверяем и сохранение и восстановление)
+        System.out.println(backedTaskManager.loadFromFile(backedTaskManager.getFileForSavings()));
 
-        System.out.println(backedTaskManager.loadFromFile(backedTaskManager.getFileForSavings()).getAllTaskList());
+        backedTaskManager.loadFromFile(file);//Exception
+        System.out.println(backedTaskManager.loadFromFile(file1));//Exception
+
     }
 }
+
