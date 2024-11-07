@@ -7,6 +7,18 @@ import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
+    private class Node {
+        Task data;
+        Node next;
+        Node prev;
+
+        Node(Node prev, Task data, Node next) {
+            this.data = data;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+
     private final HistoryLinkedList historyLinkedTaskList;
     private final Map<Integer, Node> historyMapTask;
 
@@ -39,7 +51,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
 
-    static class HistoryLinkedList {
+    class HistoryLinkedList {
         private Node head;
         private Node tail;
 
