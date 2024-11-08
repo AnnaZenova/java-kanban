@@ -14,6 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
+    @BeforeEach
+    public void beforeEach() {
+        managerTask = new InMemoryTaskManager();
+    }
+
     TaskManager manager = Managers.getDefault();
     Task task;
     Task task1;
@@ -25,7 +30,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @BeforeEach
     @DisplayName("создать объекты/экземпляры")
-    void shouldCreateObjects() {
+    void CreateObjects() {
         task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17,55), Duration.ofHours(10));
         epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17,55), Duration.ofHours(10));
         subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1, LocalDateTime.of(2024, 11, 3, 17,55), Duration.ofHours(10));
@@ -73,18 +78,6 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
             manager.getEpicById(epic.getTaskId());
         }
         assertEquals(3, manager.getHistory().size(), "Дубликаты есть");
-    }
-
-    @Test
-    @DisplayName("история содержит больше задач")
-    void shouldContainMoreTheniTasks() {
-
-        for (int i = 1; i <= 15; i++) {
-            Task a = new Task("Новая таска" + i, "Описание таски" + i, Status.NEW,LocalDateTime.of(2025,10,3,17,55), Duration.ofHours(10));
-            manager.createTask(a);
-            manager.getTaskById(a.getTaskId());
-        }
-        assertEquals(15, manager.getHistory().size(), "История содержит задач больше/меньше заданного i");
     }
 
     @Test

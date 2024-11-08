@@ -17,9 +17,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
    // public static File fileForSavings = new File ("C:\\Users\\fored\\first-project\\test1.txt");
     //так проверяю сама, просьба не учитывать при проверке
-
-
-    public static File fileForSavings;
+public static File fileForSavings;
 
     static {
         try {

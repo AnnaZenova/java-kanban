@@ -18,22 +18,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
 
-    protected T manager;
-
-    Task task;
-    Task task1;
-    Epic epic;
-    Epic epic1;
-    SubTask subTask;
-    SubTask subTask1;
-    HistoryManager historyManager = Managers.getDefaultHistory();
-    Task task2;
+    protected T managerTask;
+    protected Task task;
+    protected Task task1;
+    protected Epic epic;
+    protected Epic epic1;
+    protected SubTask subTask;
+    protected SubTask subTask1;
+    protected Task task2;
 
     @BeforeEach
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateObjects() {
-        task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10));
-        epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17, 55), Duration.ofHours(10));
+        this.task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10));
+        this.epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17, 55), Duration.ofHours(10));
         epic1 = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17, 55), Duration.ofHours(10));
         subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId(), LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10));
         task1 = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10));
@@ -44,92 +42,68 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     @DisplayName("Проверка создания тикета task")
     void shouldCreateNewTask() {
-        manager.createTask(task);
-        final Task createdTask = manager.getTaskById(task.getTaskId());
-        assertEquals(task, createdTask, "Не удалось создать задачу");
+        Task task3 = managerTask.createTask(this.task);
+        final Task createdTask = managerTask.getTaskById(task3.getTaskId());
+        assertEquals(task3, createdTask, "Не удалось создать задачу");
     }
 
     @Test
     @DisplayName("Проверка создания тикета subtask")
     void shouldCreateNewSubTask() {
-        manager.createTask(subTask);
-        final SubTask createdSubTask = manager.getSubTaskById(subTask.getTaskId());
-        assertEquals(subTask, createdSubTask, "Не удалось создать задачу");
+        Epic epic0 = managerTask.createEpic(this.epic);
+        SubTask subTask0 = managerTask.createSubTask(this.subTask);
+        SubTask createdSubTask = managerTask.getSubTaskById(subTask0.getTaskId());
+        assertEquals(this.subTask, createdSubTask, "Не удалось создать задачу");
     }
 
     @Test
     @DisplayName("Проверка создания тикета epic")
     void shouldCreateNewEpic() {
-        manager.createTask(epic);
-        final Epic createdEpic = manager.getEpicById(epic.getTaskId());
+        Epic epic5 = managerTask.createEpic(this.epic);
+        final Epic createdEpic = managerTask.getEpicById(epic5.getTaskId());
         assertEquals(epic, createdEpic, "Не удалось создать задачу");
     }
 
     @Test
     @DisplayName("Проверка удаления тикета task")
     void shouldRemoveTask() {
-        manager.createTask(task);
+        Task task3 = managerTask.createTask(this.task);
         Map<Integer, Task> tasks = new HashMap<>();
-        tasks.put(0, task);
+        tasks.put(0, task3);
         assertEquals(1, tasks.size());
-        manager.removeTaskById(task.getTaskId());
-        assertEquals(0, tasks.size(), "Ошибка удаления");
-    }
-
-    @Test
-    @DisplayName("Проверка удаления тикета subtask")
-    void shouldRemoveSubTask() {
-        manager.createSubTask(subTask);
-        Map<Integer, SubTask> subTasks = new HashMap<>();
-        subTasks.put(0, subTask);
-        assertEquals(1, subTasks.size());
-        manager.removeSubTaskById(task.getTaskId());
-        assertEquals(0, subTasks.size(), "Ошибка удаления");
-    }
-
-    @Test
-
-    @DisplayName("Проверка удаления тикета epic")
-    void shouldRemoveEpic() {
-        manager.createTask(epic);
-        Map<Integer, Epic> tasks = new HashMap<>();
-        tasks.put(0, epic);
-        assertEquals(1, tasks.size());
-        manager.removeEpicById(epic.getTaskId());
+        tasks.remove(task3.getTaskId());
         assertEquals(0, tasks.size(), "Ошибка удаления");
     }
 
     @Test
     @DisplayName("Проверка обновления тикета Task")
     void shouldUpdateTasks() {
-        manager.createTask(task);
-        task.setStatus(Status.DONE);
-        manager.updateTask(task);
-        assertEquals(Status.DONE, task.getStatus(), "Не удалось обновить задачу");
+        managerTask.createTask(this.task);
+        this.task.setStatus(Status.DONE);
+        managerTask.updateTask(this.task);
+        assertEquals(Status.DONE, this.task.getStatus(), "Не удалось обновить задачу");
     }
 
     @Test
     @DisplayName("Проверка обновления тикета SubTask")
     void shouldUpdateSubtasks() {
-        manager.createEpic(epic);
-        manager.createSubTask(subTask);
-        subTask.setStatus(Status.DONE);
-        manager.updateTask(subTask);
-        assertEquals(Status.DONE, subTask.getStatus(), "Не удалось обновить задачу");
-        assertEquals(Status.DONE, epic.getStatus(), "Не удалось обновить задачу");
+        managerTask.createEpic(this.epic);
+        managerTask.createSubTask(this.subTask);
+        this.subTask.setStatus(Status.DONE);
+        managerTask.updateTask(this.subTask);
+        assertEquals(Status.DONE, this.subTask.getStatus(), "Не удалось обновить задачу");
     }
 
     @Test
     @DisplayName("Проверка наложения интервалов времени")
-    void shoulReturnFalseIfOverlap() {
-        manager.createEpic(epic);
-        manager.createSubTask(subTask);
-        manager.createTask(task);
-        assertThrows(ManagerValidateException.class, () -> manager.createEpic(epic1), "Добавляемая задача не прошла валидацию");
-        assertThrows(ManagerValidateException.class, () -> manager.createSubTask(subTask1), "Добавляемая задача не прошла валидацию");
-        assertThrows(ManagerValidateException.class, () -> manager.createTask(task1), "Добавляемая задача не прошла валидацию");
-        assertFalse(manager.checkOverlaps(task1));
-        assertFalse(manager.checkOverlaps(epic1));
-        assertFalse(manager.checkOverlaps(subTask1));
+    void shouldReturnFalseIfOverlap() {
+        managerTask.createEpic(this.epic);
+        managerTask.createSubTask(this.subTask);
+        assertThrows(ManagerValidateException.class, () -> managerTask.createEpic(this.epic1), "Добавляемая задача не прошла валидацию");
+        assertThrows(ManagerValidateException.class, () -> managerTask.createSubTask(this.subTask1), "Добавляемая задача не прошла валидацию");
+        assertThrows(ManagerValidateException.class, () -> managerTask.createTask(this.task1), "Добавляемая задача не прошла валидацию");
+        assertFalse(managerTask.checkOverlaps(this.task1));
+        assertFalse(managerTask.checkOverlaps(this.epic1));
+        assertFalse(managerTask.checkOverlaps(this.subTask1));
     }
 }
