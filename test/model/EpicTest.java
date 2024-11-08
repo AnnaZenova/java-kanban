@@ -9,6 +9,9 @@ import service.TaskManager;
 import service.Managers;
 import status.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 
 class EpicTest extends InMemoryTaskManager {
     TaskManager manager = Managers.getDefault();
@@ -19,9 +22,9 @@ class EpicTest extends InMemoryTaskManager {
     @BeforeEach
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateEpicsAndTasksAndSubTasks() {
-        epic = new Epic("name", "desc", Status.NEW);
-        epicExpected = new Epic("name1", "desc", Status.NEW);
-        subTask = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, epic.getTaskId());
+        epic = new Epic("name", "desc", Status.NEW, LocalDateTime.of(2025,11,3,20,55), Duration.ofHours(10));
+        epicExpected = new Epic("name1", "desc", Status.NEW,LocalDateTime.of(2025,01,3,17,55), Duration.ofHours(10));
+        subTask = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, epic.getTaskId(),LocalDateTime.of(2025,11,1,17,55), Duration.ofHours(10));
     }
 
     @Test

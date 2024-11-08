@@ -5,6 +5,7 @@ import model.Task;
 import java.util.List;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -46,5 +47,17 @@ public interface TaskManager {
 
     void updateSubTask(SubTask subTask);
 
-    ArrayList<SubTask> getSubTasksByEpicId(int epicId);
+    List<SubTask> getSubTasksByEpicId(int epicId);
+
+    void calculateStartTime(Epic epic);
+
+    void calculateEpicDuration(Epic epic);
+
+    void calculateEpicEndTime(Epic epic);
+
+    Set<Task> getPrioritizedTasks();
+
+    void countStatusByEpicId(int epicId);
+
+    boolean checkOverlaps(Task task);
 }
