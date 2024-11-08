@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import status.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -18,8 +21,8 @@ class InMemoryHistoryManagerTest {
     @BeforeEach
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateObjects() {
-        task = new Task("Новая таска", "для проверки", Status.NEW);
-        epic = new Epic("Новый епик", "для проверки", Status.NEW);
+        task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(1999, 11, 3, 17,55), Duration.ofHours(10));
+        epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(1998, 11, 3, 17,55), Duration.ofHours(10));
     }
 
     @Test

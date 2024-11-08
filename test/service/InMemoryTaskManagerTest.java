@@ -6,27 +6,32 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import status.Status;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import  java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTaskManagerTest {
+class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     TaskManager manager = Managers.getDefault();
     Task task;
     Task task1;
     Epic epic;
     SubTask subTask;
+    SubTask subTask1;
     HistoryManager historyManager = Managers.getDefaultHistory();
     Task task2;
 
     @BeforeEach
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateObjects() {
-        task = new Task("Новая таска", "для проверки", Status.NEW);
-        epic = new Epic("Новый епик", "для проверки", Status.NEW);
-        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, 1);
-        task1 = new Task("Имя", "Фамилия", Status.NEW);
-        task2 = new Task("Имя", "Фамилия", Status.NEW);
+        task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17,55), Duration.ofHours(10));
+        epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17,55), Duration.ofHours(10));
+        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1, LocalDateTime.of(2024, 11, 3, 17,55), Duration.ofHours(10));
+        task1 = new Task("Имя", "Фамилия", Status.NEW,LocalDateTime.of(2022, 11, 3, 17,55), Duration.ofHours(10));
+        task2 = new Task("Имя", "Фамилия", Status.NEW,LocalDateTime.of(2021, 11, 3, 17,55), Duration.ofHours(10));
+        subTask1 = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1, LocalDateTime.of(2029, 11, 3, 17,55), Duration.ofHours(10));
     }
 
     @Test
@@ -75,7 +80,7 @@ class InMemoryTaskManagerTest {
     void shouldContainMoreTheniTasks() {
 
         for (int i = 1; i <= 15; i++) {
-            Task a = new Task("Новая таска" + i, "Описание таски" + i, Status.NEW);
+            Task a = new Task("Новая таска" + i, "Описание таски" + i, Status.NEW,LocalDateTime.of(2025,10,3,17,55), Duration.ofHours(10));
             manager.createTask(a);
             manager.getTaskById(a.getTaskId());
         }
@@ -109,6 +114,54 @@ class InMemoryTaskManagerTest {
         manager.createTask(task1);
         task2.setTaskId(task1.getTaskId());
         assertEquals(task1, task2, "Объекты не равны");
+    }
+
+    @Test
+    @DisplayName("корректный расчет статуса Epic, если все подзадачи в NEW")
+    void shouldBeCorrectEpicStatusNEW() {
+    Epic epic0 = new Epic("Epic", "status check", Status.IN_PROGRESS, LocalDateTime.of(2023,11,3,17,55), Duration.ofHours(10));
+    manager.createEpic(epic0);
+    SubTask subtask3 = new SubTask("SubTAsk", "status check", Status.NEW,epic0.getTaskId(), LocalDateTime.of(2025,11,3,17,55), Duration.ofHours(10));
+    SubTask subtask4 = new SubTask("SubTask", "status check", Status.NEW,epic0.getTaskId(), LocalDateTime.of(2020,11,3,17,55), Duration.ofHours(10));
+    manager.createSubTask(subtask3);
+    manager.createSubTask(subtask4);
+    assertEquals(Status.NEW,epic0.getStatus(),"У епика рассчитан некорректный статус");
+    }
+
+    @Test
+    @DisplayName("корректный расчет статуса Epic, если все подзадачи в DONE")
+    void shouldBeCorrectEpicStatusDONE() {
+        Epic epic = new Epic("Epic", "status check", Status.NEW, LocalDateTime.of(1999,11,3,17,55), Duration.ofHours(10));
+        manager.createEpic(epic);
+        SubTask subtask5 = new SubTask("Epic", "status check", Status.DONE, epic.getTaskId(), LocalDateTime.of(1099,11,3,17,55), Duration.ofHours(10));
+        SubTask subtask6 = new SubTask("Epic", "status check", Status.DONE,epic.getTaskId(), LocalDateTime.of(2000,11,3,17,55), Duration.ofHours(10));
+        manager.createSubTask(subtask5);
+        manager.createSubTask(subtask6);
+        assertEquals(Status.DONE,epic.getStatus(),"У епика рассчитан некорректный статус");
+    }
+
+    @Test
+    @DisplayName("корректный расчет статуса Epic, если есть подзадачи в DONE и NEW")
+    void shouldBeCorrectEpicStatusINPROGRESS() {
+        Epic epic = new Epic("Epic", "status check", Status.NEW, LocalDateTime.of(1999,11,3,17,55), Duration.ofHours(10));
+        manager.createEpic(epic);
+        SubTask subtask5 = new SubTask("Epic", "status check", Status.NEW, epic.getTaskId(), LocalDateTime.of(1099,11,3,17,55), Duration.ofHours(10));
+        SubTask subtask6 = new SubTask("Epic", "status check", Status.DONE,epic.getTaskId(), LocalDateTime.of(2000,11,3,17,55), Duration.ofHours(10));
+        manager.createSubTask(subtask5);
+        manager.createSubTask(subtask6);
+        assertEquals(Status.IN_PROGRESS,epic.getStatus(),"У епика рассчитан некорректный статус");
+    }
+
+    @Test
+    @DisplayName("корректный расчет статуса Epic, если подзадачи в статусе IN_PROGRESS")
+    void shouldBeCorrectEpicStatusIN_PROGRESS() {
+        Epic epic = new Epic("Epic", "status check", Status.NEW, LocalDateTime.of(1999,11,3,17,55), Duration.ofHours(10));
+        manager.createEpic(epic);
+        SubTask subtask5 = new SubTask("Epic", "status check", Status.IN_PROGRESS, epic.getTaskId(), LocalDateTime.of(1099,11,3,17,55), Duration.ofHours(10));
+        SubTask subtask6 = new SubTask("Epic", "status check", Status.IN_PROGRESS,epic.getTaskId(), LocalDateTime.of(2000,11,3,17,55), Duration.ofHours(10));
+        manager.createSubTask(subtask5);
+        manager.createSubTask(subtask6);
+        assertEquals(Status.IN_PROGRESS,epic.getStatus(),"У епика рассчитан некорректный статус");
     }
 }
 

@@ -7,18 +7,6 @@ import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private class Node {
-        Task data;
-        Node next;
-        Node prev;
-
-        Node(Node prev, Task data, Node next) {
-            this.data = data;
-            this.next = next;
-            this.prev = prev;
-        }
-    }
-
     private final HistoryLinkedList historyLinkedTaskList;
     private final Map<Integer, Node> historyMapTask;
 
@@ -62,27 +50,27 @@ public class InMemoryHistoryManager implements HistoryManager {
             if (oldTail == null) {
                 head = newNode;
             } else {
-                oldTail.next = newNode;
+                oldTail.setNext(newNode);
             }
             return newNode;
         }
 
         private void removeNode(Node node) { //удалить узел
-            final Node next = node.next;
-            final Node prev = node.prev;
+            final Node next = node.getNext();
+            final Node prev = node.getPrev();
 
             if (prev == null) { //если предыдущий узел null
                 head = next;
             } else {
-                prev.next = next;
-                node.prev = null;
+                prev.setNext(next);
+                node.setPrev(null);
             }
 
             if (next == null) { //если следующий узел null
                 tail = prev;
             } else {
-                next.prev = prev;
-                node.next = null;
+                next.setPrev(prev);
+                node.setNext(null);
             }
         }
 
@@ -91,8 +79,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             ArrayList<Task> taskList = new ArrayList<>();
             Node node = head;
             while (node != null) {
-                taskList.add(node.data);
-                node = node.next;
+                taskList.add(node.getData());
+                node = node.getNext();
             }
             return taskList;
         }

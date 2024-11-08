@@ -8,6 +8,9 @@ import service.Managers;
 import service.TaskManager;
 import status.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SubTaskTest extends InMemoryTaskManager {
@@ -18,14 +21,14 @@ class SubTaskTest extends InMemoryTaskManager {
     @BeforeEach
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateEpicsAndTasksAndSubTasks() {
-        epic = new Epic("name", "desc", Status.NEW);
-        subTask = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, epic.getTaskId());
+        epic = new Epic("name", "desc", Status.NEW, LocalDateTime.of(2014, 11, 3, 17, 55), Duration.ofHours(10));
+        subTask = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, epic.getTaskId(), LocalDateTime.of(2013, 11, 3, 17, 55), Duration.ofHours(10));
     }
 
     @Test
     @DisplayName("проверяем получение id")
     void getEpicId() {
-        SubTask subTask1 = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, 1);
+        SubTask subTask1 = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, 1, LocalDateTime.of(2012, 11, 3, 17, 55), Duration.ofHours(10));
         assertEquals(1, subTask1.getEpicId(), "ID не совпадают");
 
     }
