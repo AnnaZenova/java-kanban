@@ -11,11 +11,11 @@ public class Epic extends Task {
 
     public final List<Integer> subTaskIdList = new ArrayList<>();
 
-    public Epic(String name, String description, Status status,LocalDateTime startTime, Duration duration) {
-        super(name, description, status,startTime,duration);
+    public Epic(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
+        super(name, description, status, startTime, duration);
         type = TaskType.EPIC;
         this.status = Status.DONE;
-        this.startTime=getStartTime();
+        this.startTime = getStartTime();
         this.duration = getDuration();
     }
 
