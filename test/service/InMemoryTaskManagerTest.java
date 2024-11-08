@@ -33,7 +33,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     void CreateObjects() {
         task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17,55), Duration.ofHours(10));
         epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17,55), Duration.ofHours(10));
-        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1, LocalDateTime.of(2024, 11, 3, 17,55), Duration.ofHours(10));
+        subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1, LocalDateTime.of(2024, 11, 4, 17,55), Duration.ofHours(10));
         task1 = new Task("Имя", "Фамилия", Status.NEW,LocalDateTime.of(2022, 11, 3, 17,55), Duration.ofHours(10));
         task2 = new Task("Имя", "Фамилия", Status.NEW,LocalDateTime.of(2021, 11, 3, 17,55), Duration.ofHours(10));
         subTask1 = new SubTask("Новая cабтаска", "для проверки", Status.NEW,1, LocalDateTime.of(2029, 11, 3, 17,55), Duration.ofHours(10));
