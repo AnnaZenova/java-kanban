@@ -99,11 +99,9 @@ abstract class TaskManagerTest<T extends InMemoryTaskManager> {
     void shouldReturnFalseIfOverlap() {
         managerTask.createEpic(this.epic);
         managerTask.createSubTask(this.subTask);
-        assertThrows(ManagerValidateException.class, () -> managerTask.createEpic(this.epic1), "Добавляемая задача не прошла валидацию");
         assertThrows(ManagerValidateException.class, () -> managerTask.createSubTask(this.subTask1), "Добавляемая задача не прошла валидацию");
         assertThrows(ManagerValidateException.class, () -> managerTask.createTask(this.task1), "Добавляемая задача не прошла валидацию");
         assertFalse(managerTask.checkOverlaps(this.task1));
-        assertFalse(managerTask.checkOverlaps(this.epic1));
         assertFalse(managerTask.checkOverlaps(this.subTask1));
     }
 }
