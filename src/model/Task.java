@@ -1,6 +1,9 @@
 package model;
 import status.Status;
 import status.TaskType;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -10,12 +13,21 @@ public class Task {
     private String description; //Описание, в котором раскрываются детали.
     protected Status status; //статус задачи
     protected TaskType type;//Тип задачи
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
 
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
         type = TaskType.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public LocalDateTime getCalculatedEndTime(LocalDateTime startTime, Duration duration) {
+        return endTime = startTime.plus(duration);
     }
 
     public void setName(String name) {
@@ -54,6 +66,22 @@ public class Task {
         return type;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,7 +102,10 @@ public class Task {
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
-                ", type=" + getType() +
+                ", type=" + getType() + '\'' +
+                ",startTime=" + getStartTime() + '\'' +
+                ",duration=" + getDuration() + '\'' +
+                ",endTime=" + getCalculatedEndTime(getStartTime(), getDuration()) + '\'' +
                 '}';
     }
 }

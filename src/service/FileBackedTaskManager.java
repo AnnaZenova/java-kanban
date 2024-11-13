@@ -9,13 +9,14 @@ import status.Status;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    //public static File fileForSavings = new File ("C:\\Users\\fored\\first-project\\test.txt");
+    // public static File fileForSavings = new File ("C:\\Users\\fored\\first-project\\test1.txt");
     //так проверяю сама, просьба не учитывать при проверке
-
     public static File fileForSavings;
 
     static {
@@ -28,7 +29,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() throws ManagerSaveException {
         StringBuilder sb = new StringBuilder();
-        sb.append("id,type,name,status,description,epic").append("\n");
+        sb.append("id,type,name,status,description,epic,startTime,duration").append("\n");
         try (BufferedWriter fileWriter = new BufferedWriter(
                 new FileWriter(fileForSavings, StandardCharsets.UTF_8))) {
             if (fileForSavings.exists()) {
@@ -82,14 +83,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String taskToString(Task task) {
         StringBuilder sb = new StringBuilder();
-        TaskType type = task.getType();
-        sb.append(task.getTaskId());
-        sb.append(",").append(type);
-        sb.append(",").append(task.getName());
-        sb.append(",").append(task.getStatus());
-        sb.append(",").append(task.getDescription());
-        if (type.equals(TaskType.SUBTASK)) {
-            sb.append(",").append(((SubTask) task).getEpicId());
+        try {
+            TaskType type = task.getType();
+            sb.append(task.getTaskId());
+            sb.append(",").append(type);
+            sb.append(",").append(task.getName());
+            sb.append(",").append(task.getStatus());
+            sb.append(",").append(task.getDescription());
+            sb.append(",").append(task.getStartTime());
+            sb.append(",").append(task.getDuration().toMinutes());
+            if (type.equals(TaskType.SUBTASK)) {
+                sb.append(",").append(((SubTask) task).getEpicId());
+            }
+        } catch (NullPointerException e) {
+            System.out.println("параметры времени не были заданы");
         }
         return sb.toString();
     }
@@ -99,19 +106,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         int taskId = Integer.parseInt(line[0]);
         TaskType type = TaskType.valueOf(line[1]);
         String name = line[2];
-        Status status = Status.valueOf(line[3]);
         String description = line[4];
+        Status status = Status.valueOf(line[3]);
+        LocalDateTime startTime = LocalDateTime.parse(line[5]);
+        Duration duration = Duration.ofMinutes(Long.parseLong(line[6]));
         Task task = null;
         switch (type) {
             case TaskType.SUBTASK:
-                int epicId = Integer.parseInt(line[5]);
-                task = new SubTask(name, description, status, epicId);
+                int epicId = Integer.parseInt(line[7]);
+                task = new SubTask(name, description, status, epicId, startTime, duration);
                 break;
             case TaskType.EPIC:
                 task = new Epic(name, description, status);
                 break;
             case TaskType.TASK:
-                task = new Task(name, description, status);
+                task = new Task(name, description, status, startTime, duration);
                 break;
             default:
                 System.out.println("Такого типа не существует");

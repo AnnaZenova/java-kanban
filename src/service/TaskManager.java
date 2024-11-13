@@ -5,6 +5,7 @@ import model.Task;
 import java.util.List;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -46,5 +47,7 @@ public interface TaskManager {
 
     void updateSubTask(SubTask subTask);
 
-    ArrayList<SubTask> getSubTasksByEpicId(int epicId);
+    List<SubTask> getSubTasksByEpicId(int epicId);
+
+    Set<Task> getPrioritizedTasks();
 }
