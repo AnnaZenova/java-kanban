@@ -49,15 +49,5 @@ public interface TaskManager {
 
     List<SubTask> getSubTasksByEpicId(int epicId);
 
-    void calculateStartTime(Epic epic);
-
-    void calculateEpicDuration(Epic epic);
-
-    void calculateEpicEndTime(Epic epic);
-
     Set<Task> getPrioritizedTasks();
-
-    void countStatusByEpicId(int epicId);
-
-    boolean checkOverlaps(Task task);
 }

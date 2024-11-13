@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-   // public static File fileForSavings = new File ("C:\\Users\\fored\\first-project\\test1.txt");
+    // public static File fileForSavings = new File ("C:\\Users\\fored\\first-project\\test1.txt");
     //так проверяю сама, просьба не учитывать при проверке
-public static File fileForSavings;
+    public static File fileForSavings;
 
     static {
         try {
@@ -83,16 +83,20 @@ public static File fileForSavings;
 
     private String taskToString(Task task) {
         StringBuilder sb = new StringBuilder();
-        TaskType type = task.getType();
-        sb.append(task.getTaskId());
-        sb.append(",").append(type);
-        sb.append(",").append(task.getName());
-        sb.append(",").append(task.getStatus());
-        sb.append(",").append(task.getDescription());
-        sb.append(",").append(task.getStartTime());
-        sb.append(",").append(task.getDuration().toMinutes());
-        if (type.equals(TaskType.SUBTASK)) {
-            sb.append(",").append(((SubTask) task).getEpicId());
+        try {
+            TaskType type = task.getType();
+            sb.append(task.getTaskId());
+            sb.append(",").append(type);
+            sb.append(",").append(task.getName());
+            sb.append(",").append(task.getStatus());
+            sb.append(",").append(task.getDescription());
+            sb.append(",").append(task.getStartTime());
+            sb.append(",").append(task.getDuration().toMinutes());
+            if (type.equals(TaskType.SUBTASK)) {
+                sb.append(",").append(((SubTask) task).getEpicId());
+            }
+        } catch (NullPointerException e) {
+            System.out.println("параметры времени не были заданы");
         }
         return sb.toString();
     }
@@ -110,13 +114,13 @@ public static File fileForSavings;
         switch (type) {
             case TaskType.SUBTASK:
                 int epicId = Integer.parseInt(line[7]);
-                task = new SubTask(name, description, status, epicId,startTime,duration);
+                task = new SubTask(name, description, status, epicId, startTime, duration);
                 break;
             case TaskType.EPIC:
-                task = new Epic(name, description, status, startTime, duration);
+                task = new Epic(name, description, status);
                 break;
             case TaskType.TASK:
-                task = new Task(name, description, status,startTime, duration);
+                task = new Task(name, description, status, startTime, duration);
                 break;
             default:
                 System.out.println("Такого типа не существует");

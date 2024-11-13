@@ -21,19 +21,32 @@ public class Main {
         taskManager.deleteTaskList();
         taskManager.deleteSubTaskList();
 
-        Task task1 = taskManager.createTask(new Task("Задача1", "Описание4", Status.NEW, LocalDateTime.of(2025, 11, 3, 17, 55), Duration.ofHours(10L)));
+        Task task1 = taskManager.createTask(new Task("Задача1", "Описание4", Status.NEW, LocalDateTime.of(2025, 11, 3, 17, 55), Duration.ofHours(10)));
         System.out.println(task1);
-        Task task2 = taskManager.createTask(new Task("Задача1", "Описание1", Status.NEW, LocalDateTime.of(2026, 11, 3, 17, 55), Duration.ofHours(10L)));
+        Task task2 = taskManager.createTask(new Task("Задача1", "Описание1", Status.NEW, LocalDateTime.of(2026, 11, 3, 17, 55), Duration.ofHours(10)));
         backedTaskManager.createTask(task1);
         backedTaskManager.createTask(task2);
-        Epic epic1 = taskManager.createEpic(new Epic("Эпик1", "Описание эпика1", Status.IN_PROGRESS, LocalDateTime.of(2027, 11, 3, 17, 55), Duration.ofHours(10L)));//я тут проверяла
+
+        Epic epic1 = taskManager.createEpic(new Epic("Эпик1", "Описание эпика1", Status.IN_PROGRESS));
         backedTaskManager.createEpic(epic1);
-
-        SubTask subTask1 = taskManager.createSubTask(new SubTask("Подзадача1", "Описание подзадачи1", Status.DONE, epic1.getTaskId(), LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10L)));
+        System.out.println(epic1);
+        SubTask subTask1 = taskManager.createSubTask(new SubTask("Подзадача1", "Описание подзадачи1", Status.DONE, epic1.getTaskId(), LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10)));
+        System.out.println(task1.getStartTime());
+        System.out.println(task1.getDuration());
+        System.out.println(task2.getStartTime());
+        System.out.println(task2.getDuration());
+        System.out.println(epic1.getStartTime());
+        System.out.println(epic1.getDuration());
         backedTaskManager.createSubTask(subTask1);
+        //Epic epic1 = taskManager.createEpic(new Epic("Эпик1", "Описание эпика1", Status.IN_PROGRESS));
 
-        taskManager.updateSubTask(new SubTask("Задача update", "Описание update", Status.NEW, epic1.getTaskId(), LocalDateTime.of(2028, 11, 3, 17, 55), Duration.ofHours(10L)));
-        Epic epic2 = taskManager.createEpic(new Epic("Эпик2", "Описание эпика2", Status.DONE, LocalDateTime.of(2029, 11, 3, 17, 55), Duration.ofHours(10L)));
+        System.out.println(epic1);
+        System.out.println(epic1);
+        System.out.println(epic1.getStartTime());
+
+        taskManager.updateSubTask(new SubTask("Задача update", "Описание update", Status.NEW, epic1.getTaskId(), LocalDateTime.of(2028, 11, 3, 17, 55), Duration.ofHours(10)));
+        Epic epic2 = taskManager.createEpic(new Epic("Эпик2", "Описание эпика2", Status.DONE));
+        System.out.println(epic2);
         backedTaskManager.createEpic(epic2);
         //проверки по файлам:
         File file = new File("C:\\Users\\fored\\first-project\\tests.txt");

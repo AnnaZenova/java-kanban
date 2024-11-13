@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class TaskManagerTest<T extends TaskManager> {
+abstract class TaskManagerTest<T extends InMemoryTaskManager> {
 
     protected T managerTask;
     protected Task task;
@@ -31,8 +31,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateObjects() {
         this.task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10));
-        this.epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17, 55), Duration.ofHours(10));
-        epic1 = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(2023, 11, 3, 17, 55), Duration.ofHours(10));
+        this.epic = new Epic("Новый епик", "для проверки", Status.NEW);
+        epic1 = new Epic("Новый епик", "для проверки", Status.NEW);
         subTask = new SubTask("Новая cабтаска", "для проверки", Status.NEW, epic.getTaskId(), LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10));
         task1 = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(2024, 11, 3, 17, 55), Duration.ofHours(10));
         task2 = new Task("Имя", "Фамилия", Status.NEW, LocalDateTime.of(2021, 11, 3, 17, 55), Duration.ofHours(10));

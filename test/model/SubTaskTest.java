@@ -21,7 +21,7 @@ class SubTaskTest extends InMemoryTaskManager {
     @BeforeEach
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateEpicsAndTasksAndSubTasks() {
-        epic = new Epic("name", "desc", Status.NEW, LocalDateTime.of(2014, 11, 3, 17, 55), Duration.ofHours(10));
+        epic = new Epic("name", "desc", Status.NEW);
         subTask = new SubTask("Новый епик", "новый епик", Status.IN_PROGRESS, epic.getTaskId(), LocalDateTime.of(2013, 11, 3, 17, 55), Duration.ofHours(10));
     }
 

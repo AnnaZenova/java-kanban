@@ -102,7 +102,10 @@ public class Task {
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
-                ", type=" + getType() +
+                ", type=" + getType() + '\'' +
+                ",startTime=" + getStartTime() + '\'' +
+                ",duration=" + getDuration() + '\'' +
+                ",endTime=" + getCalculatedEndTime(getStartTime(), getDuration()) + '\'' +
                 '}';
     }
 }

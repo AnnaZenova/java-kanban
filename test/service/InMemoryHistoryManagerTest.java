@@ -22,7 +22,7 @@ class InMemoryHistoryManagerTest {
     @DisplayName("создать объекты/экземпляры")
     void shouldCreateObjects() {
         task = new Task("Новая таска", "для проверки", Status.NEW, LocalDateTime.of(1999, 11, 3, 17,55), Duration.ofHours(10));
-        epic = new Epic("Новый епик", "для проверки", Status.NEW, LocalDateTime.of(1998, 11, 3, 17,55), Duration.ofHours(10));
+        epic = new Epic("Новый епик", "для проверки", Status.NEW);
     }
 
     @Test
