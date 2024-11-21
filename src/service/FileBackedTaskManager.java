@@ -17,7 +17,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     // public static File fileForSavings = new File ("C:\\Users\\fored\\first-project\\test1.txt");
     //так проверяю сама, просьба не учитывать при проверке
-    public static File fileForSavings;
+    public static final File fileForSavings;
 
     static {
         try {
@@ -117,7 +117,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 task = new SubTask(name, description, status, epicId, startTime, duration);
                 break;
             case TaskType.EPIC:
-                task = new Epic(name, description, status);
+                task = new Epic(name, description, status, startTime, duration);
                 break;
             case TaskType.TASK:
                 task = new Task(name, description, status, startTime, duration);

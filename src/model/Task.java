@@ -26,6 +26,23 @@ public class Task {
         this.duration = duration;
     }
 
+    public Task(String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        type = TaskType.TASK;
+    }
+
+    public Task(int taskId, String name, String description, Status status, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        type = TaskType.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.taskId = taskId;
+    }
+
     public LocalDateTime getCalculatedEndTime(LocalDateTime startTime, Duration duration) {
         return endTime = startTime.plus(duration);
     }

@@ -1,4 +1,5 @@
 package service;
+import exceptions.NotFoundException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
@@ -41,7 +42,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("что экземпляры класса равны друг другу, если равен ID")
-    void shouldCreateEqualTasksById() {
+    void shouldCreateEqualTasksById() throws NotFoundException {
         manager.createTask(task);
         Task task1 = manager.getTaskById(task.getTaskId());
         Task task2 = manager.getTaskById(task.getTaskId());
@@ -50,7 +51,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("что экземпляры класса равны друг другу, если равен ID")
-    void shouldCreateEqualEpicsById() {
+    void shouldCreateEqualEpicsById() throws NotFoundException {
         manager.createEpic(epic);
         Epic epic1 = manager.getEpicById(epic.getTaskId());
         Epic epic2 = manager.getEpicById(epic.getTaskId());
@@ -68,7 +69,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("в историю не попадают повторы")
-    void shouldBeNoDublicates() {
+    void shouldBeNoDublicates() throws NotFoundException {
         manager.createTask(task);
         manager.createEpic(epic);
         manager.createSubTask(subTask);
@@ -82,7 +83,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("просмотренные задачи должны добавляться в конец")
-    void shouldTaskBeAddedInTheEnd() {
+    void shouldTaskBeAddedInTheEnd() throws NotFoundException {
         manager.createTask(task);
         manager.createEpic(epic);
         manager.getEpicById(epic.getTaskId());
@@ -92,7 +93,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("операция добавления работает")
-    void ShouldAddTicketToHistory() {
+    void ShouldAddTicketToHistory() throws NotFoundException {
         manager.createTask(task);
         manager.getTaskById(task.getTaskId());
         manager.createEpic(epic);
@@ -111,7 +112,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("корректный расчет статуса Epic, если все подзадачи в NEW")
-    void shouldBeCorrectEpicStatusNEW() {
+    void shouldBeCorrectEpicStatusNEW() throws NotFoundException {
     Epic epic0 = new Epic("Epic", "status check", Status.IN_PROGRESS);
     manager.createEpic(epic0);
     SubTask subtask3 = new SubTask("SubTAsk", "status check", Status.NEW,epic0.getTaskId(), LocalDateTime.of(2025,11,3,17,55), Duration.ofHours(10));
@@ -123,7 +124,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("корректный расчет статуса Epic, если все подзадачи в DONE")
-    void shouldBeCorrectEpicStatusDONE() {
+    void shouldBeCorrectEpicStatusDONE() throws NotFoundException {
         Epic epic = new Epic("Epic", "status check", Status.NEW);
         manager.createEpic(epic);
         SubTask subtask5 = new SubTask("Epic", "status check", Status.DONE, epic.getTaskId(), LocalDateTime.of(1099,11,3,17,55), Duration.ofHours(10));
@@ -135,7 +136,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("корректный расчет статуса Epic, если есть подзадачи в DONE и NEW")
-    void shouldBeCorrectEpicStatusINPROGRESS() {
+    void shouldBeCorrectEpicStatusINPROGRESS() throws NotFoundException {
         Epic epic = new Epic("Epic", "status check", Status.NEW);
         manager.createEpic(epic);
         SubTask subtask5 = new SubTask("Epic", "status check", Status.NEW, epic.getTaskId(), LocalDateTime.of(1099,11,3,17,55), Duration.ofHours(10));
@@ -147,7 +148,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     @DisplayName("корректный расчет статуса Epic, если подзадачи в статусе IN_PROGRESS")
-    void shouldBeCorrectEpicStatusIN_PROGRESS() {
+    void shouldBeCorrectEpicStatusIN_PROGRESS() throws NotFoundException {
         Epic epic = new Epic("Epic", "status check", Status.NEW);
         manager.createEpic(epic);
         SubTask subtask5 = new SubTask("Epic", "status check", Status.IN_PROGRESS, epic.getTaskId(), LocalDateTime.of(1099,11,3,17,55), Duration.ofHours(10));

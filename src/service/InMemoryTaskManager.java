@@ -221,6 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
         this.taskId = taskId;
     }
 
+    @Override
     public void calculateEpicStartTimeAndDurationAndEndTime(Epic epic) {
         List<Integer> subTaskIds = epic.getSubTaskIdList();
         LocalDateTime startTime = null;
@@ -252,11 +253,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Set<Task> getPrioritizedTasks() {
-        Set<Task> copy = new HashSet<>(prioritizedTasks);
-        return copy;
+        return new HashSet<>(prioritizedTasks);
     }
 
-    public boolean checkOverlaps(Task task) {
+    boolean checkOverlaps(Task task) {
         Set<Task> tasks = getPrioritizedTasks();
         for (Task task1 : tasks) {
             if (task1.getStartTime() == null && task1.getCalculatedEndTime(task1.getStartTime(), task1.getDuration()) == null) {
