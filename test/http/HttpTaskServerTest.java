@@ -195,6 +195,9 @@ public class HttpTaskServerTest {
     @DisplayName("Проверка получения списка епиков")
     public void shouldGetEpicList() throws IOException, InterruptedException, NotFoundException {
         manager.createEpic(epic);
+        manager.createSubTask(subTask);
+        manager.calculateEpicStartTimeAndDurationAndEndTime(epic);
+        System.out.println(epic);
         URI url = URI.create(EPIC_URL);
         HttpRequest request = HttpRequest.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
@@ -207,8 +210,6 @@ public class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, bodyHandler);
         // проверяем код ответа
         assertEquals(200, response.statusCode(), "Код ответа отличается");
-        Epic[] body = gson.fromJson(response.body(), Epic[].class);
-
         // проверяем, что создалась одна задача с корректным именем
         final List<Epic> epics = gson.fromJson(response.body(), new TypeToken<ArrayList<Epic>>() {
         }.getType());
