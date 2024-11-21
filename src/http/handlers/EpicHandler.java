@@ -70,8 +70,8 @@ public class EpicHandler extends BaseHttpHandler {
     private void getEpicSubTasks(HttpExchange httpExchange) throws IOException {
         List<SubTask> subTaskList = new ArrayList<>();
         try {
-            int ID = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
-            for (Integer subTaskId : taskManager.getEpicById(ID).getSubTaskIdList()) {
+            int id = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
+            for (Integer subTaskId : taskManager.getEpicById(id).getSubTaskIdList()) {
                 subTaskList.add(taskManager.getSubTaskById(subTaskId));
             }
             String jsonSubTaskList = gson.toJson(subTaskList);
@@ -93,11 +93,11 @@ public class EpicHandler extends BaseHttpHandler {
 
     private void deleteEpicById(HttpExchange httpExchange) throws IOException {
         try {
-            int ID = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
-            taskManager.removeEpicById(ID);
+            int id = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
+            taskManager.removeEpicById(id);
             sendOnlyCode(httpExchange);
         } catch (NotFoundException exception) {
-            sendNotFound(httpExchange, "Invalid ID");
+            sendNotFound(httpExchange, "Invalid id");
         }
     }
 

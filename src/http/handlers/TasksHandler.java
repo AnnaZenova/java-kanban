@@ -93,11 +93,11 @@ public class TasksHandler extends BaseHttpHandler {
 
     private void deleteTaskById(HttpExchange httpExchange) throws IOException {
         try {
-            int ID = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
-            taskManager.removeTaskById(ID);
+            int id = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
+            taskManager.removeTaskById(id);
             sendOnlyCode(httpExchange);
         } catch (NotFoundException exception) {
-            sendNotFound(httpExchange, "Invalid ID");
+            sendNotFound(httpExchange, "Invalid id");
         }
     }
 

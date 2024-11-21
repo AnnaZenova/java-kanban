@@ -77,11 +77,11 @@ public class SubTaskHandler extends BaseHttpHandler {
 
     private void deleteSubTaskById(HttpExchange httpExchange) throws IOException {
         try {
-            int ID = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
-            taskManager.removeSubTaskById(ID);
+            int id = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
+            taskManager.removeSubTaskById(id);
             sendOnlyCode(httpExchange);
         } catch (NotFoundException exception) {
-            sendNotFound(httpExchange, "Invalid ID");
+            sendNotFound(httpExchange, "Invalid id");
         }
     }
 
