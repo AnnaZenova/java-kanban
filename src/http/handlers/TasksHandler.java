@@ -54,8 +54,8 @@ public class TasksHandler extends BaseHttpHandler {
 
     private void getTaskById(HttpExchange httpExchange) throws IOException {
         try {
-            int ID = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
-            String task = gson.toJson(taskManager.getTaskById(ID));
+            int id = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
+            String task = gson.toJson(taskManager.getTaskById(id));
             sendText(httpExchange, task);
         } catch (NotFoundException e) {
             sendNotFound(httpExchange, "Task not found by id");

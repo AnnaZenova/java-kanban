@@ -59,8 +59,8 @@ public class EpicHandler extends BaseHttpHandler {
 
     private void getEpicById(HttpExchange httpExchange) throws IOException {
         try {
-            int ID = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
-            String epic = gson.toJson(taskManager.getEpicById(ID));
+            int id = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
+            String epic = gson.toJson(taskManager.getEpicById(id));
             sendText(httpExchange, epic);
         } catch (NotFoundException e) {
             sendNotFound(httpExchange, "Task not found by id");

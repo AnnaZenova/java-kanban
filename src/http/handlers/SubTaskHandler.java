@@ -54,8 +54,8 @@ public class SubTaskHandler extends BaseHttpHandler {
 
     private void getSubTaskById(HttpExchange httpExchange) throws IOException {
         try {
-            int ID = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
-            String subtask = gson.toJson(taskManager.getSubTaskById(ID));
+            int id = Integer.parseInt(httpExchange.getRequestURI().getPath().split("/")[2]);
+            String subtask = gson.toJson(taskManager.getSubTaskById(id));
             sendText(httpExchange, subtask);
         } catch (NotFoundException e) {
             sendNotFound(httpExchange, "Subtask not found by id");
