@@ -16,7 +16,8 @@ public class BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    public void handle(HttpExchange exchange) throws IOException {}
+    public void handle(HttpExchange exchange) throws IOException {
+    }
 
     protected void sendText(HttpExchange exchange, String text) throws IOException {
         try (OutputStream os = exchange.getResponseBody()) {
