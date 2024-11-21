@@ -1,27 +1,26 @@
-package API.Handlers;
+package http.handlers;
 
-import Adapters.DurationAdapter;
-import Adapters.LocalDateTimeAdapter;
+import adapters.DurationAdapter;
+import adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import exceptions.NotFoundException;
 import model.SubTask;
-import model.Task;
 import service.TaskManager;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class SubTask_Handler extends BaseHttpHandler {
+public class SubTaskHandler extends BaseHttpHandler {
 
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
-    public SubTask_Handler(TaskManager taskManager) {
+    public SubTaskHandler(TaskManager taskManager) {
         super(taskManager);
     }
 

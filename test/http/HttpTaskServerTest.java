@@ -1,6 +1,6 @@
-package API;
-import Adapters.DurationAdapter;
-import Adapters.LocalDateTimeAdapter;
+package http;
+import adapters.DurationAdapter;
+import adapters.LocalDateTimeAdapter;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import exceptions.NotFoundException;

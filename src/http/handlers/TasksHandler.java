@@ -1,6 +1,6 @@
-package API.Handlers;
-import Adapters.DurationAdapter;
-import Adapters.LocalDateTimeAdapter;
+package http.handlers;
+import adapters.DurationAdapter;
+import adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
@@ -14,9 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Tasks_Handler extends BaseHttpHandler {
+public class TasksHandler extends BaseHttpHandler {
 
-    public Tasks_Handler(TaskManager taskManager) {
+    public TasksHandler(TaskManager taskManager) {
         super(taskManager);
     }
 

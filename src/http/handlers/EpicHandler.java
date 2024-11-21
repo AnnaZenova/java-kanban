@@ -1,6 +1,6 @@
-package API.Handlers;
-import Adapters.DurationAdapter;
-import Adapters.LocalDateTimeAdapter;
+package http.handlers;
+import adapters.DurationAdapter;
+import adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
@@ -15,14 +15,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Epic_Handler extends BaseHttpHandler {
+public class EpicHandler extends BaseHttpHandler {
 
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
-    public Epic_Handler(TaskManager taskManager) {
+    public EpicHandler(TaskManager taskManager) {
         super(taskManager);
 
     }

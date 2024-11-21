@@ -1,9 +1,9 @@
-package API;
+package http;
 import java.io.IOException;
 
-import API.Handlers.*;
-import Adapters.DurationAdapter;
-import Adapters.LocalDateTimeAdapter;
+import http.handlers.*;
+import adapters.DurationAdapter;
+import adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
@@ -37,11 +37,11 @@ public class HttpTaskServer {
         taskManager.createTask(task);
         HttpServer httpServer = HttpServer.create();
         httpServer.bind(new InetSocketAddress(PORT), 0); // связываем сервер с сетевым портом
-        httpServer.createContext(pathForTasks, new Tasks_Handler(taskManager));
-        httpServer.createContext(pathForSubTasks, new SubTask_Handler(taskManager));
-        httpServer.createContext(pathForEpics, new Epic_Handler(taskManager));
-        httpServer.createContext(pathForHistory, new History_Handler(taskManager));
-        httpServer.createContext(pathForPrioritized, new Prioritized_Handler(taskManager));
+        httpServer.createContext(pathForTasks, new TasksHandler(taskManager));
+        httpServer.createContext(pathForSubTasks, new SubTaskHandler(taskManager));
+        httpServer.createContext(pathForEpics, new EpicHandler(taskManager));
+        httpServer.createContext(pathForHistory, new HistoryHandler(taskManager));
+        httpServer.createContext(pathForPrioritized, new PrioritizedHandler(taskManager));
         httpServer.start();
     }
 
@@ -53,11 +53,11 @@ public class HttpTaskServer {
         HttpTaskServer.taskManager = taskManager;
         httpServer = HttpServer.create();
         httpServer.bind(new InetSocketAddress(port), 0);
-        httpServer.createContext(pathForTasks, new Tasks_Handler(taskManager));
-        httpServer.createContext(pathForSubTasks, new SubTask_Handler(taskManager));
-        httpServer.createContext(pathForEpics, new Epic_Handler(taskManager));
-        httpServer.createContext(pathForHistory, new History_Handler(taskManager));
-        httpServer.createContext(pathForPrioritized, new Prioritized_Handler(taskManager));
+        httpServer.createContext(pathForTasks, new TasksHandler(taskManager));
+        httpServer.createContext(pathForSubTasks, new SubTaskHandler(taskManager));
+        httpServer.createContext(pathForEpics, new EpicHandler(taskManager));
+        httpServer.createContext(pathForHistory, new HistoryHandler(taskManager));
+        httpServer.createContext(pathForPrioritized, new PrioritizedHandler(taskManager));
     }
 
     public void start() {

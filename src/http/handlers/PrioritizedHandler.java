@@ -1,40 +1,39 @@
-package API.Handlers;
+package http.handlers;
 
-import Adapters.DurationAdapter;
-import Adapters.LocalDateTimeAdapter;
+import adapters.DurationAdapter;
+import adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import exceptions.NotFoundException;
 import service.TaskManager;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class History_Handler extends BaseHttpHandler {
+
+public class PrioritizedHandler extends BaseHttpHandler {
 
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
-    public History_Handler(TaskManager taskManager) {
+    public PrioritizedHandler(TaskManager taskManager) {
         super(taskManager);
-
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        getHistory(httpExchange);
+        getPrioritizedTasksList(httpExchange);
     }
 
-    private void getHistory(HttpExchange httpExchange) throws IOException {
+    private void getPrioritizedTasksList(HttpExchange httpExchange) throws IOException {
         try {
-            String jsonHistory = gson.toJson(taskManager.getHistory());
-            sendText(httpExchange, jsonHistory);
+            String jsonPrioritizedList = gson.toJson(taskManager.getPrioritizedTasks());
+            sendText(httpExchange, jsonPrioritizedList);
         } catch (NotFoundException e) {
-            sendNotFound(httpExchange, "History not found");
+            sendNotFound(httpExchange, "Prioritized list not found");
         }
     }
 }
