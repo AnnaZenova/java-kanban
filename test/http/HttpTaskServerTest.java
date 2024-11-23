@@ -171,7 +171,7 @@ public class HttpTaskServerTest {
     }
 
     @Test
-    @DisplayName("Проверка получения епика по ID")
+    @DisplayName("Проверка получения таска по ID")
     public void testGetTaskById() throws IOException, InterruptedException, NotFoundException {
         manager.createTask(task);
         URI url = URI.create(TASK_BY_ID_URL);
