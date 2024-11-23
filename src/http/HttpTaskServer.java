@@ -20,16 +20,15 @@ import java.time.LocalDateTime;
 public class HttpTaskServer {
 
     private static final int PORT = 8080;
-    HttpServer httpServer;
+    private static final String PATH_FOR_TASKS = "/tasks";
+    private static final String PATH_FOR_SUBTASKS = "/subtasks";
+    private static final String PATH_FOR_EPICS = "/epics";
+    private static final String PATH_FOR_HISTORY = "/history";
+    private static final String PATH_FOR_PRIORITIZED = "/prioritized";
+    private static HttpServer httpServer;
     private final Gson gson;
-    static HistoryManager historyManager = Managers.getDefaultHistory();
-    static TaskManager taskManager = Managers.getDefault(historyManager);
-    private static final String pathForTasks = "/tasks";
-    private static final String pathForSubTasks = "/subtasks";
-    private static final String pathForEpics = "/epics";
-    private static final String pathForHistory = "/history";
-    private static final String pathForPrioritized = "/prioritized";
-
+    private static HistoryManager historyManager = Managers.getDefaultHistory();
+    private static TaskManager taskManager = Managers.getDefault(historyManager);
 
     public static void main(String[] args) throws IOException {
         Task task = new Task("Test1", "Test2", Status.IN_PROGRESS, LocalDateTime.of(2222, 01, 01, 00, 00), Duration.ofHours(50));
@@ -37,11 +36,11 @@ public class HttpTaskServer {
         taskManager.createTask(task);
         HttpServer httpServer = HttpServer.create();
         httpServer.bind(new InetSocketAddress(PORT), 0); // связываем сервер с сетевым портом
-        httpServer.createContext(pathForTasks, new TasksHandler(taskManager));
-        httpServer.createContext(pathForSubTasks, new SubTaskHandler(taskManager));
-        httpServer.createContext(pathForEpics, new EpicHandler(taskManager));
-        httpServer.createContext(pathForHistory, new HistoryHandler(taskManager));
-        httpServer.createContext(pathForPrioritized, new PrioritizedHandler(taskManager));
+        httpServer.createContext(PATH_FOR_TASKS, new TasksHandler(taskManager));
+        httpServer.createContext(PATH_FOR_SUBTASKS, new SubTaskHandler(taskManager));
+        httpServer.createContext(PATH_FOR_EPICS, new EpicHandler(taskManager));
+        httpServer.createContext(PATH_FOR_HISTORY, new HistoryHandler(taskManager));
+        httpServer.createContext(PATH_FOR_PRIORITIZED, new PrioritizedHandler(taskManager));
         httpServer.start();
     }
 
@@ -53,11 +52,11 @@ public class HttpTaskServer {
         HttpTaskServer.taskManager = taskManager;
         httpServer = HttpServer.create();
         httpServer.bind(new InetSocketAddress(port), 0);
-        httpServer.createContext(pathForTasks, new TasksHandler(taskManager));
-        httpServer.createContext(pathForSubTasks, new SubTaskHandler(taskManager));
-        httpServer.createContext(pathForEpics, new EpicHandler(taskManager));
-        httpServer.createContext(pathForHistory, new HistoryHandler(taskManager));
-        httpServer.createContext(pathForPrioritized, new PrioritizedHandler(taskManager));
+        httpServer.createContext(PATH_FOR_TASKS, new TasksHandler(taskManager));
+        httpServer.createContext(PATH_FOR_SUBTASKS, new SubTaskHandler(taskManager));
+        httpServer.createContext(PATH_FOR_EPICS, new EpicHandler(taskManager));
+        httpServer.createContext(PATH_FOR_HISTORY, new HistoryHandler(taskManager));
+        httpServer.createContext(PATH_FOR_PRIORITIZED, new PrioritizedHandler(taskManager));
     }
 
     public void start() {

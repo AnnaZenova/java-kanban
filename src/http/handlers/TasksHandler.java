@@ -20,7 +20,7 @@ public class TasksHandler extends BaseHttpHandler {
         super(taskManager);
     }
 
-    Gson gson = new GsonBuilder()
+    private Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
@@ -64,6 +64,9 @@ public class TasksHandler extends BaseHttpHandler {
 
 
     private void createOrUpdateTask(HttpExchange httpExchange) throws IOException {
+        if (httpExchange.getRequestBody()==null) {
+            sendNotFound(httpExchange, "No request body was found");
+        }
         boolean isNewTask = true;
         InputStream is = httpExchange.getRequestBody();
         String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);

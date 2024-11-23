@@ -17,14 +17,13 @@ import java.util.List;
 
 public class EpicHandler extends BaseHttpHandler {
 
-    Gson gson = new GsonBuilder()
+    private Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
     public EpicHandler(TaskManager taskManager) {
         super(taskManager);
-
     }
 
     @Override
@@ -82,6 +81,9 @@ public class EpicHandler extends BaseHttpHandler {
     }
 
     private void createEpic(HttpExchange httpExchange) throws IOException {
+        if (httpExchange.getRequestBody()==null) {
+        sendNotFound(httpExchange, "No request body was found");
+        }
         try {
             Epic epic = gson.fromJson(httpExchange.getRequestBody().toString(), Epic.class);
             taskManager.createEpic(epic);

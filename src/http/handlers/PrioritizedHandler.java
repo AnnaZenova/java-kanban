@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 public class PrioritizedHandler extends BaseHttpHandler {
 
-    Gson gson = new GsonBuilder()
+    private Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();

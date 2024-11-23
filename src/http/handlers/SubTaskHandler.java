@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 public class SubTaskHandler extends BaseHttpHandler {
 
-    Gson gson = new GsonBuilder()
+    private Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
@@ -64,6 +64,9 @@ public class SubTaskHandler extends BaseHttpHandler {
 
 
     private void createOrUpdateSubTask(HttpExchange httpExchange) throws IOException {
+        if (httpExchange.getRequestBody()==null) {
+            sendNotFound(httpExchange, "No request body was found");
+        }
         try {
             SubTask subTask = gson.fromJson(httpExchange.getRequestBody().toString(), SubTask.class);
             if (subTask.getTaskId() == 0) {

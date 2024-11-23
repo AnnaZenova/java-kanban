@@ -256,7 +256,7 @@ public class InMemoryTaskManager implements TaskManager {
         return new HashSet<>(prioritizedTasks);
     }
 
-    boolean checkOverlaps(Task task) {
+    public boolean checkOverlaps(Task task) {
         Set<Task> tasks = getPrioritizedTasks();
         for (Task task1 : tasks) {
             if (task1.getStartTime() == null && task1.getCalculatedEndTime(task1.getStartTime(), task1.getDuration()) == null) {
