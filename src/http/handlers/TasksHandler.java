@@ -64,7 +64,7 @@ public class TasksHandler extends BaseHttpHandler {
 
 
     private void createOrUpdateTask(HttpExchange httpExchange) throws IOException {
-        if (httpExchange.getRequestBody()==null) {
+        if (httpExchange.getRequestBody() == null) {
             sendNotFound(httpExchange, "No request body was found");
         }
         boolean isNewTask = true;

@@ -64,7 +64,7 @@ public class SubTaskHandler extends BaseHttpHandler {
 
 
     private void createOrUpdateSubTask(HttpExchange httpExchange) throws IOException {
-        if (httpExchange.getRequestBody()==null) {
+        if (httpExchange.getRequestBody() == null) {
             sendNotFound(httpExchange, "No request body was found");
         }
         try {

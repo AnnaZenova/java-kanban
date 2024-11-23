@@ -81,7 +81,7 @@ public class EpicHandler extends BaseHttpHandler {
     }
 
     private void createEpic(HttpExchange httpExchange) throws IOException {
-        if (httpExchange.getRequestBody()==null) {
+        if (httpExchange.getRequestBody() ==  null) {
         sendNotFound(httpExchange, "No request body was found");
         }
         try {
