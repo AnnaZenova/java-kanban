@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 public class BaseHttpHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected TaskManager taskManager;
+
     protected BaseHttpHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
     }
