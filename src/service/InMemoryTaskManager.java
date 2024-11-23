@@ -184,6 +184,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<SubTask> getSubTasksByEpicId(int epicId) {
+        System.out.println("1");
         return epics.get(epicId).getSubTaskIdList().stream()
                 .map(this::getSubTaskById)
                 .collect(Collectors.toList());

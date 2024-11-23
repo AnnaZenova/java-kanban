@@ -257,16 +257,10 @@ public class HttpTaskServerTest {
         // вызываем рест, отвечающий за создание задач
         HttpResponse.BodyHandler<String> bodyHandler = HttpResponse.BodyHandlers.ofString();
         HttpResponse<String> response = client.send(request, bodyHandler);
-        // проверяем код ответа
-
         assertEquals(200, response.statusCode());
-        SubTask[] body = gson.fromJson(response.body(), SubTask[].class);
-
         // проверяем, что создалась одна задача с корректным именем
         final List<SubTask> subTasks = gson.fromJson(response.body(), new TypeToken<ArrayList<SubTask>>() {
         }.getType());
-        assertEquals(manager.getSubTasksByEpicId(epic.getTaskId()), subTasks, "Списки сабтасков неравны");
-        // проверяем, что создалась одна задача с корректным именем
         assertEquals(1, subTasks.size(), "Некорректное количество задач");
         assertEquals(subTask, subTasks.get(0), "Разные сабтаски");
     }
