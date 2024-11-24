@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class SubTaskTest extends InMemoryTaskManager {
 
     @Test
     @DisplayName("проверяем установку id")
-    void setEpicId() {
+    void setEpicId() throws NotFoundException {
         manager.createEpic(epic);
         manager.createSubTask(subTask);
         subTask.setEpicId(1);

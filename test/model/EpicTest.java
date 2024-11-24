@@ -1,4 +1,5 @@
 package model;
+import exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ class EpicTest extends InMemoryTaskManager {
 
     @Test
     @DisplayName("проверяем добавляет ли в лист сабтасков новый ID")
-    void shouldAddSubTuskToList() {
+    void shouldAddSubTuskToList() throws NotFoundException {
         manager.createEpic(epic);
         manager.createSubTask(subTask);
         assertEquals(1, epic.subTaskIdList.size(), "Список сабтасков пустой");

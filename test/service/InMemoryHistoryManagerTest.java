@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.NotFoundException;
 import model.Epic;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,7 @@ class InMemoryHistoryManagerTest {
 
     @Test
     @DisplayName("проверяем добавление по add")
-    void shouldAddNewTaskToStory() {
+    void shouldAddNewTaskToStory() throws NotFoundException {
         manager.createTask(task);
         manager.getTaskById(task.getTaskId());
         manager.createEpic(epic);
